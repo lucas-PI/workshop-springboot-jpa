@@ -79,4 +79,12 @@ public class Order implements Serializable {
     public void setItems(Set<OrderItem> items) {
         this.items = items;
     }
+
+    public Double getTotal(){
+        Double total = 0.0;
+        for(OrderItem x : items){
+          total =  x.getSubTotal() + total;
+        }
+        return total;
+    }
 }
