@@ -1,9 +1,6 @@
 package com.educando.course.entites;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.MapsId;
-import jakarta.persistence.OneToOne;
+import jakarta.persistence.*;
 
 import java.io.Serial;
 import java.io.Serializable;
@@ -12,6 +9,8 @@ import java.time.Instant;
 @Entity
 public class Payment implements Serializable {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idPayment;
     private Instant moment;
     @OneToOne
