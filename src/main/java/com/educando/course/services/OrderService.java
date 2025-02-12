@@ -22,4 +22,18 @@ public class OrderService {
         Optional<Order> obj = orderRepository.findById(id);
         return obj.get();
     }
+
+    public Order insert(Order obj){
+        return orderRepository.save(obj);
+    }
+    public void delete(Long id){ orderRepository.deleteById(id); }
+    public Order update(Long id, Order obj){
+        Order entity = orderRepository.getReferenceById(id);
+        updateDate(entity, obj);
+        return orderRepository.save(entity);
+    }
+
+    private void updateDate(Order entity, Order obj) {
+        entity.setOrderStatus(obj.getOrderStatus());
+    }
 }

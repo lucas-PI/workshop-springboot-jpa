@@ -22,4 +22,19 @@ public class CategoryService {
         Optional<Category> obj = categoryRepository.findById(id);
         return obj.get();
     }
+    public Category insert(Category obj){
+        return categoryRepository.save(obj);
+    }
+    public void delete(Long id){
+        categoryRepository.deleteById(id);
+    }
+    public Category update(Long id,Category obj){
+        Category entity = categoryRepository.getReferenceById(id);
+        updateData(entity,obj);
+        return categoryRepository.save(entity);
+    }
+
+    private void updateData(Category entity, Category obj) {
+        entity.setName(obj.getName());
+    }
 }
