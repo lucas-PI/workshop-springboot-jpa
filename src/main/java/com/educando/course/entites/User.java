@@ -2,6 +2,7 @@ package com.educando.course.entites;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import lombok.Builder;
 
 import java.io.Serial;
 import java.io.Serializable;
@@ -10,6 +11,7 @@ import java.util.List;
 
 @Entity
 @Table(name = "tb_users")
+
 public class User implements Serializable {
     @Serial
     private static final long serialVersionUID = 1L;
@@ -28,7 +30,7 @@ public class User implements Serializable {
     public User(){
 
     }
-
+    @Builder
     public User(Long id, String name, String email, String phone, String password) {
 
         this.id = id;

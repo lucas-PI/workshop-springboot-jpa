@@ -1,5 +1,7 @@
 package com.educando.course.services;
 
+import com.educando.course.dto.UserPostRequest;
+import com.educando.course.dto.UserPutRequest;
 import com.educando.course.entites.User;
 import com.educando.course.repositories.UserRepository;
 import com.educando.course.services.exception.DatabaseException;
@@ -25,11 +27,11 @@ public class UserService {
     public User findById(Long id){
         Optional<User> obj = repository.findById(id);
         return obj.orElseThrow(() -> new ResourceNotFoundException(id));
-
-
     }
 
-    public User insert(User obj){
+    public User insert(UserPostRequest userPostRequest){
+        User obj = User.builder().name(userPostRequest.getName()).phone(userPostRequest.getPhone())
+                .email(userPostRequest.getEmail()).password(userPostRequest.getPassword()).build();
         return  repository.save(obj);
     }
 
@@ -40,18 +42,18 @@ public class UserService {
             throw new DatabaseException(e.getMessage());
         }
         }
-    public User update(Long id, User obj){
+    public User update(Long id, UserPutRequest userPutRequest) {
         try{User entity = repository.getReferenceById(id);
-            updateData(entity,obj);
+            updateData(entity,userPutRequest);
             return repository.save(entity);}
         catch (EntityNotFoundException e){
             throw new ResourceNotFoundException(id);
         }
     }
 
-    private void updateData(User entity, User obj) {
-        entity.setName(obj.getName());
-        entity.setEmail(obj.getEmail());
-        entity.setPhone(obj.getPhone());
+    private void updateData(User entity, UserPutRequest userPutRequest) {
+        entity.setName(userPutRequest.getName());
+        entity.setEmail(userPutRequest.getEmail());
+        entity.setPhone(userPutRequest.getPhone());
     }
 }
