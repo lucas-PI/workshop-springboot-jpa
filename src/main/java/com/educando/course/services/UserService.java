@@ -3,6 +3,7 @@ package com.educando.course.services;
 import com.educando.course.dto.UserPostRequest;
 import com.educando.course.dto.UserPutRequest;
 import com.educando.course.entites.User;
+import com.educando.course.mapper.UserMapper;
 import com.educando.course.repositories.UserRepository;
 import com.educando.course.services.exception.DatabaseException;
 import com.educando.course.services.exception.ResourceNotFoundException;
@@ -19,6 +20,8 @@ public class UserService {
 
     @Autowired
     private UserRepository repository;
+    @Autowired
+    private UserMapper userMapper;
 
     public List<User> findAll(){
         return repository.findAll();
@@ -30,9 +33,7 @@ public class UserService {
     }
 
     public User insert(UserPostRequest userPostRequest){
-        User obj = User.builder().name(userPostRequest.getName()).phone(userPostRequest.getPhone())
-                .email(userPostRequest.getEmail()).password(userPostRequest.getPassword()).build();
-        return  repository.save(obj);
+        return  repository.save(userMapper.toUser(userPostRequest));
     }
 
     public void delete(Long id) {
@@ -43,9 +44,10 @@ public class UserService {
         }
         }
     public User update(Long id, UserPutRequest userPutRequest) {
-        try{User entity = repository.getReferenceById(id);
-            updateData(entity,userPutRequest);
-            return repository.save(entity);}
+        try{User userSaved = repository.getReferenceById(id);
+            User user = userMapper.toUser(userPutRequest);
+            user.setId(userSaved.getId());
+            return repository.save(user);}
         catch (EntityNotFoundException e){
             throw new ResourceNotFoundException(id);
         }
