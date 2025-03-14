@@ -6,11 +6,14 @@ import com.educando.course.entites.User;
 import com.educando.course.mapper.UserMapper;
 import com.educando.course.repositories.UserRepository;
 import com.educando.course.services.exception.DatabaseException;
+import com.educando.course.services.exception.ResourceByNameNotFound;
 import com.educando.course.services.exception.ResourceNotFoundException;
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.persistence.RollbackException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -32,6 +35,17 @@ public class UserService {
         return obj.orElseThrow(() -> new ResourceNotFoundException(id));
     }
 
+    public List<User> findByName(String name){
+        try {
+            List<User> list = repository.findByNameIgnoreCase(name);
+            if(list.isEmpty()){throw new RuntimeException();}
+            return list;
+        }catch(RuntimeException e){
+            throw new ResourceByNameNotFound(name);
+        }
+    }
+
+    @Transactional(rollbackFor = Exception.class)
     public User insert(UserPostRequest userPostRequest){
         return  repository.save(userMapper.toUser(userPostRequest));
     }

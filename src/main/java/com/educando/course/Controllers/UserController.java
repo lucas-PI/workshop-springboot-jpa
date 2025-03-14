@@ -42,6 +42,13 @@ public class UserController {
 
     }
 
+    @GetMapping(path = "/find")
+    public ResponseEntity<List<User>> findByName(@RequestParam String name){
+        List<User> listByName = service.findByName(name);
+        log.info(dataUtil.formatLocalDateTimeToDatabaseStyle(LocalDateTime.now()));
+        return ResponseEntity.ok().body(listByName);
+    }
+
     @PostMapping
     public ResponseEntity<User> insert(@RequestBody UserPostRequest userPostRequest){
         User user = service.insert(userPostRequest);
