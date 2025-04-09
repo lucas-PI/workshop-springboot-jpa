@@ -1,4 +1,4 @@
-package com.educando.course.dto;
+package com.educando.course.dto.user;
 
 import java.io.Serial;
 import java.io.Serializable;

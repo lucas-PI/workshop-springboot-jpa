@@ -1,14 +1,21 @@
-package com.educando.course.dto;
+package com.educando.course.dto.user;
+
+import jakarta.validation.constraints.NotEmpty;
 
 import java.io.Serial;
 import java.io.Serializable;
 
+
 public class UserPostRequest implements Serializable {
     @Serial
     private static final long serialVersionUID = 1l;
+    @NotEmpty(message = "the User name can't be empty ")
     private String name;
+    @NotEmpty(message = "the User email can't be empty ")
     private String email;
+    @NotEmpty(message = "the User phone can't be empty ")
     private String phone;
+    @NotEmpty(message = "the User password can't be empty ")
     private String password;
 
     public UserPostRequest(String name, String email, String phone, String password) {
