@@ -1,7 +1,7 @@
 package com.educando.course.services;
 
-import com.educando.course.dto.UserPostRequest;
-import com.educando.course.dto.UserPutRequest;
+import com.educando.course.dto.user.UserPostRequest;
+import com.educando.course.dto.user.UserPutRequest;
 import com.educando.course.entites.User;
 import com.educando.course.mapper.UserMapper;
 import com.educando.course.repositories.UserRepository;
@@ -9,7 +9,6 @@ import com.educando.course.services.exception.DatabaseException;
 import com.educando.course.services.exception.ResourceByNameNotFound;
 import com.educando.course.services.exception.ResourceNotFoundException;
 import jakarta.persistence.EntityNotFoundException;
-import jakarta.persistence.RollbackException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
