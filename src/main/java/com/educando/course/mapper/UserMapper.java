@@ -1,7 +1,7 @@
 package com.educando.course.mapper;
 
-import com.educando.course.dto.UserPostRequest;
-import com.educando.course.dto.UserPutRequest;
+import com.educando.course.dto.user.UserPostRequest;
+import com.educando.course.dto.user.UserPutRequest;
 import com.educando.course.entites.User;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
