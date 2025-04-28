@@ -1,9 +1,13 @@
 package com.educando.course.services;
 
+import com.educando.course.dto.product.ProductPostRequest;
+import com.educando.course.dto.product.ProductPutRequest;
 import com.educando.course.entites.Product;
+import com.educando.course.mapper.ProductMapper;
 import com.educando.course.repositories.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -13,6 +17,8 @@ public class ProductService {
 
     @Autowired
     private ProductRepository productRepository;
+    @Autowired
+    private ProductMapper productMapper;
 
     public List<Product> findAll(){
         List<Product> productList = productRepository.findAll();
@@ -23,16 +29,17 @@ public class ProductService {
         Optional<Product> obj = productRepository.findById(id);
         return obj.get();
     }
-
-    public Product insert(Product obj){
-        return productRepository.save(obj);
+    @Transactional
+    public Product insert(ProductPostRequest productPostRequest){
+        return productRepository.save(productMapper.toProduct(productPostRequest));
     }
     public void delete(Long id){
         productRepository.deleteById(id);
     }
-    public Product update(Long id, Product obj){
+
+    public Product update(Long id, ProductPutRequest productPutRequest){
         Product entity = productRepository.getReferenceById(id);
-        updateDate(entity, obj);
+        updateDate(entity, productMapper.toProduct(productPutRequest));
         return productRepository.save(entity);
     }
 
@@ -42,4 +49,5 @@ public class ProductService {
         entity.setPrice(obj.getPrice());
         entity.setImgUrl(obj.getImgUrl());
     }
+
 }

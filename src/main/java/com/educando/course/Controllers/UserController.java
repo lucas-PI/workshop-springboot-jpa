@@ -1,11 +1,12 @@
 package com.educando.course.Controllers;
 
 
-import com.educando.course.dto.UserPostRequest;
-import com.educando.course.dto.UserPutRequest;
+import com.educando.course.dto.user.UserPostRequest;
+import com.educando.course.dto.user.UserPutRequest;
 import com.educando.course.entites.User;
 import com.educando.course.services.UserService;
 import com.educando.course.util.DateUtil;
+import jakarta.validation.Valid;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -50,7 +51,7 @@ public class UserController {
     }
 
     @PostMapping
-    public ResponseEntity<User> insert(@RequestBody UserPostRequest userPostRequest){
+    public ResponseEntity<User> insert(@RequestBody @Valid UserPostRequest userPostRequest){
         User user = service.insert(userPostRequest);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
                 .buildAndExpand(user.getId())
@@ -66,7 +67,7 @@ public class UserController {
         return ResponseEntity.noContent().build();
     }
     @PutMapping(value = "/{id}")
-    public ResponseEntity<User> update(@PathVariable Long id, @RequestBody UserPutRequest userPutRequest){
+    public ResponseEntity<User> update(@PathVariable Long id, @RequestBody @Valid UserPutRequest userPutRequest){
         User obj = service.update(id, userPutRequest);
         log.info(dataUtil.formatLocalDateTimeToDatabaseStyle(LocalDateTime.now()));
         return ResponseEntity.ok(obj);
