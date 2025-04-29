@@ -9,6 +9,8 @@ import com.educando.course.util.DateUtil;
 import jakarta.validation.Valid;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -29,10 +31,10 @@ public class UserController {
     private DateUtil dataUtil;
 
     @GetMapping
-    public ResponseEntity<List<User>> findAll(){
-        List<User> list = service.findAll();
+    public ResponseEntity<Page<User>> findAll(Pageable pageable){
+        Page<User> pageList = service.findAll(pageable);
         log.info(dataUtil.formatLocalDateTimeToDatabaseStyle(LocalDateTime.now()));
-        return ResponseEntity.ok().body(list);
+        return ResponseEntity.ok().body(pageList);
     }
 
     @GetMapping(value ="/{id}")
@@ -44,10 +46,10 @@ public class UserController {
     }
 
     @GetMapping(path = "/find")
-    public ResponseEntity<List<User>> findByName(@RequestParam String name){
-        List<User> listByName = service.findByName(name);
+    public ResponseEntity<Page<User>> findByName(Pageable pageable,@RequestParam String name){
+        Page<User> pageListByName = service.findByName(pageable, name);
         log.info(dataUtil.formatLocalDateTimeToDatabaseStyle(LocalDateTime.now()));
-        return ResponseEntity.ok().body(listByName);
+        return ResponseEntity.ok().body(pageListByName);
     }
 
     @PostMapping
