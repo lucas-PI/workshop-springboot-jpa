@@ -11,6 +11,8 @@ import com.educando.course.services.exception.ResourceNotFoundException;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -25,8 +27,8 @@ public class UserService {
     @Autowired
     private UserMapper userMapper;
 
-    public List<User> findAll(){
-        return repository.findAll();
+    public Page<User> findAll(Pageable pageable){
+        return repository.findAll(pageable);
     }
 
     public User findById(Long id){
@@ -34,11 +36,11 @@ public class UserService {
         return obj.orElseThrow(() -> new ResourceNotFoundException(id));
     }
 
-    public List<User> findByName(String name){
+    public Page<User> findByName(Pageable pageable,String name){
         try {
             List<User> list = repository.findByNameIgnoreCase(name);
             if(list.isEmpty()){throw new RuntimeException();}
-            return list;
+            return repository.findByNameContainingIgnoreCase(name, pageable);
         }catch(RuntimeException e){
             throw new ResourceByNameNotFound(name);
         }
