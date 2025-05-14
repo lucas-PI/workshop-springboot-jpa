@@ -2,6 +2,7 @@ package com.educando.course.entites;
 
 import com.educando.course.entites.enums.OrderStatus;
 import jakarta.persistence.*;
+import lombok.Builder;
 
 import java.io.Serial;
 import java.io.Serializable;
@@ -32,7 +33,7 @@ public class Order implements Serializable {
 
     public Order() {
     }
-
+    @Builder
     public Order(Long idOrder, Instant moment,OrderStatus orderStatus,User client) {
         this.idOrder = idOrder;
         this.moment = moment;
@@ -49,12 +50,14 @@ public class Order implements Serializable {
     }
 
     public void setMoment(Instant moment) {
-        moment = moment;
+        this.moment = moment;
     }
 
     public User getClient(){
         return client;
     }
+
+    public void setClient(User client){this.client = client;}
 
     public OrderStatus getOrderStatus() {
         return OrderStatus.valueOf(orderStatus);
