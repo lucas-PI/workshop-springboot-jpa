@@ -1,8 +1,10 @@
 package com.educando.course.Controllers;
 
+import com.educando.course.dto.order.OrderPostRequest;
 import com.educando.course.entites.Order;
 import com.educando.course.repositories.OrderRepository;
 import com.educando.course.services.OrderService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -30,8 +32,8 @@ public class OrderController {
         return ResponseEntity.ok().body(order);
     }
     @PostMapping
-    public ResponseEntity<Order> insert(@RequestBody Order obj){
-        obj = orderService.insert(obj);
+    public ResponseEntity<Order> insert(@RequestBody @Valid OrderPostRequest orderPostRequest){
+        Order obj = orderService.insert(orderPostRequest);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
                 .buildAndExpand(obj.getIdOrder())
                 .toUri();
